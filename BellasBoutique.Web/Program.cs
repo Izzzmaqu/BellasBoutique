@@ -1,6 +1,11 @@
+using BellasBoutique.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var cadenaConexion = builder.Configuration.GetConnectionString("BellasBoutique")
+    ?? throw new InvalidOperationException("Falta la cadena de conexión 'BellasBoutique' en appsettings.json.");
+
+builder.Services.AddDatos(cadenaConexion);
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

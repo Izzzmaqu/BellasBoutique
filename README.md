@@ -25,6 +25,9 @@ Los estilos comparten los tokens de `wwwroot/css/tokens.css`; `wwwroot/css/base.
 
 ## Ejecutar
 
+La primera vez, y después de cada migración nueva, crea o actualiza la base de datos SQLite (`bellas.db`, no se versiona):
+
 ```powershell
+dotnet ef database update --project BellasBoutique.Data --startup-project BellasBoutique.Web
 dotnet run --project BellasBoutique.Web
 ```
