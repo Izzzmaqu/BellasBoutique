@@ -1,0 +1,43 @@
+:root {
+    --color-bg-page: #FAF8F4;
+    --color-bg-surface: #FFFFFF;
+    --color-bg-muted: #F2EEE8;
+    --color-bg-placeholder: #E7E1D8;
+    --color-text-primary: #1F1B18;
+    --color-text-secondary: #6B645D;
+    --color-text-inverse: #FFFFFF;
+    --color-border: #E3DDD4;
+    --color-brand: #7A2E3F;
+    --color-brand-soft: #F3E6E8;
+    --color-success: #2F6B4F;
+    --color-success-soft: #E4F0EA;
+    --color-error: #B3382C;
+    --color-error-soft: #F8E5E2;
+    --color-warning: #946A12;
+    --color-warning-soft: #F6EBD3;
+
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+
+    --font-heading: 'Lora', serif;
+    --font-body: 'Inter', sans-serif;
+
+    --font-size-h1: 32px;
+    --line-height-h1: 40px;
+    --font-size-h2: 24px;
+    --line-height-h2: 32px;
+    --font-size-h3: 18px;
+    --line-height-h3: 26px;
+    --font-size-body: 15px;
+    --line-height-body: 22px;
+    --font-size-small: 13px;
+    --line-height-small: 18px;
+}
