@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="BellasBoutique.Application/BellasBoutique.Application.csproj" />
+  <Project Path="BellasBoutique.Data/BellasBoutique.Data.csproj" />
+  <Project Path="BellasBoutique.Web/BellasBoutique.Web.csproj" />
+</Solution>
