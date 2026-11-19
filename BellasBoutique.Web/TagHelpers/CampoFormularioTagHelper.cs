@@ -4,11 +4,6 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace BellasBoutique.Web.TagHelpers;
 
-/// <summary>
-/// Envuelve un control de formulario con su etiqueta y su mensaje de error:
-/// <c>&lt;campo-formulario asp-for="Nombre"&gt;&lt;input asp-for="Nombre" /&gt;&lt;/campo-formulario&gt;</c>.
-/// Es un tag helper y no un partial porque un partial no puede recibir la expresión de asp-for.
-/// </summary>
 [HtmlTargetElement("campo-formulario", Attributes = "asp-for")]
 public class CampoFormularioTagHelper(IHtmlGenerator generadorHtml) : TagHelper
 {

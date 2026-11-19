@@ -3,18 +3,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BellasBoutique.Data.Catalogo.Configuraciones;
 
-/// <summary>
-/// Reglas de la tabla Productos: campos obligatorios, nombre único, precio y stock no negativos,
-/// relaciones con Categoria y Proveedor, y datos iniciales.
-/// </summary>
 public class ProductoConfiguracion : IEntityTypeConfiguration<Producto>
 {
     public void Configure(EntityTypeBuilder<Producto> builder)
     {
         builder.ToTable("Productos", tabla =>
         {
-            // EF guarda los decimal de SQLite como texto; sin el CAST la comparación sería alfabética
-            // ('0.00' > '0' sería verdadero) y solo acertaría por casualidad.
             tabla.HasCheckConstraint("CK_Productos_Precio_NoNegativo", "CAST(\"Precio\" AS REAL) >= 0");
             tabla.HasCheckConstraint("CK_Productos_Stock_NoNegativo", "\"Stock\" >= 0");
         });

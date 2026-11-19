@@ -4,10 +4,6 @@ namespace BellasBoutique.Web.Infraestructura;
 
 public static class MensajesDeEnlaceEnEspanol
 {
-    /// <summary>
-    /// Traduce los mensajes que ASP.NET genera por su cuenta cuando un valor no se puede convertir
-    /// (por ejemplo, letras en un campo numérico). Sin esto saldrían en inglés.
-    /// </summary>
     public static void UsarMensajesDeEnlaceEnEspanol(this MvcOptions opciones)
     {
         var mensajes = opciones.ModelBindingMessageProvider;

@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BellasBoutique.Web.Controllers.Catalogo;
 
-/// <summary>Pantallas de gestión de productos del administrador. Las reglas viven en IProductoService.</summary>
 public class ProductosAdminController(IProductoService servicioProductos) : Controller
 {
     public async Task<IActionResult> Index(CancellationToken cancelacion)
@@ -77,7 +76,6 @@ public class ProductosAdminController(IProductoService servicioProductos) : Cont
         return VolverAlListado(resultado);
     }
 
-    /// <summary>Muestra la vista de la acción actual (Crear o Editar) con las listas cargadas y, si hay, un error general.</summary>
     private async Task<IActionResult> MostrarFormularioAsync(
         ProductoFormularioViewModel modelo,
         CancellationToken cancelacion,

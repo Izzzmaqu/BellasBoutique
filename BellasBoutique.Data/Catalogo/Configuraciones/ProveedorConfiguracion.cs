@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BellasBoutique.Data.Catalogo.Configuraciones;
 
-/// <summary>Reglas de la tabla Proveedores: nombre obligatorio y único, y datos iniciales.</summary>
 public class ProveedorConfiguracion : IEntityTypeConfiguration<Proveedor>
 {
     public void Configure(EntityTypeBuilder<Proveedor> builder)

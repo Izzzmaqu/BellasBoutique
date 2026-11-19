@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BellasBoutique.Data.Catalogo.Configuraciones;
 
-/// <summary>Reglas de la tabla Categorias: nombre obligatorio y único, y datos iniciales.</summary>
 public class CategoriaConfiguracion : IEntityTypeConfiguration<Categoria>
 {
     public void Configure(EntityTypeBuilder<Categoria> builder)

@@ -1,6 +1,5 @@
 namespace BellasBoutique.Data.Catalogo;
 
-/// <summary>Artículo que se vende en la tienda.</summary>
 public class Producto
 {
     public int Id { get; set; }
@@ -21,6 +20,5 @@ public class Producto
 
     public Proveedor Proveedor { get; set; } = null!;
 
-    // Baja lógica: un producto dado de baja no se borra porque las ventas pasadas lo siguen referenciando.
     public bool Activo { get; set; } = true;
 }

@@ -3,11 +3,6 @@ using BellasBoutique.Data.Catalogo;
 
 namespace BellasBoutique.Application.Catalogo;
 
-/// <summary>
-/// Único lugar donde se convierte entre las entidades del catálogo y sus ViewModels.
-/// Las proyecciones trabajan sobre IQueryable para que EF las traduzca a SQL
-/// y solo traiga las columnas necesarias.
-/// </summary>
 public static class ProductoMapeos
 {
     public static IQueryable<ProductoListadoViewModel> ProyectarAListado(this IQueryable<Producto> productos) =>
@@ -37,7 +32,6 @@ public static class ProductoMapeos
     public static IQueryable<OpcionViewModel> ProyectarAOpciones(this IQueryable<Proveedor> proveedores) =>
         proveedores.Select(proveedor => new OpcionViewModel(proveedor.Id, proveedor.Nombre));
 
-    /// <summary>Copia los datos del formulario, ya validado, a la entidad para crearla o editarla.</summary>
     public static void CopiarA(this ProductoFormularioViewModel modelo, Producto producto)
     {
         producto.Nombre = modelo.Nombre.Trim();

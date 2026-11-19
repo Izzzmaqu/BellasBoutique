@@ -12,7 +12,6 @@ document.addEventListener("submit", (evento) => {
     evento.preventDefault();
     formularioPorConfirmar = formulario;
     mensajeDelModal.textContent = mensaje;
-    // El modal recuerda el último botón pulsado; se limpia para que cerrar con Esc no confirme.
     modalConfirmacion.returnValue = "";
     modalConfirmacion.showModal();
 });

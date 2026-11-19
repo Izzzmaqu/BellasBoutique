@@ -2,11 +2,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BellasBoutique.Application.Catalogo.ViewModels;
 
-/// <summary>
-/// Datos que el administrador escribe al crear o editar un producto.
-/// Los números son nullable para que un campo vacío muestre el mensaje de "obligatorio"
-/// en lugar de un error de conversión.
-/// </summary>
 public class ProductoFormularioViewModel
 {
     [Display(Name = "Nombre")]
@@ -18,7 +13,6 @@ public class ProductoFormularioViewModel
     [StringLength(500, ErrorMessage = "La descripción no puede tener más de 500 caracteres.")]
     public string? Descripcion { get; set; }
 
-    // Colones enteros: así el formulario nunca maneja separador decimal, que en es-CR es la coma.
     [Display(Name = "Precio")]
     [Required(ErrorMessage = "El precio es obligatorio.")]
     [Range(1, int.MaxValue, ErrorMessage = "El precio debe ser mayor que 0.")]
@@ -37,6 +31,5 @@ public class ProductoFormularioViewModel
     [Required(ErrorMessage = "Seleccione un proveedor.")]
     public int? ProveedorId { get; set; }
 
-    /// <summary>Opciones de los select. Solo se muestran; el formulario no las envía.</summary>
     public ListasDesplegablesViewModel Listas { get; set; } = ListasDesplegablesViewModel.Vacias;
 }

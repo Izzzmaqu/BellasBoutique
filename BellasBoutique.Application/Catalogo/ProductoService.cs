@@ -6,10 +6,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BellasBoutique.Application.Catalogo;
 
-// Cada operación de escritura termina en un único SaveChangesAsync. EF ejecuta ese guardado
-// dentro de una transacción, así que la operación es atómica sin abrir una transacción explícita.
-// Facturación sí la necesitará: al vender se lee el stock, se valida y se escriben Venta,
-// DetalleVenta y el nuevo stock, y la lectura y las escrituras deben quedar en el mismo bloque.
 public class ProductoService(AppDbContext contexto) : IProductoService
 {
     private const string MensajeNombreRepetido = "Ya existe un producto con ese nombre (puede estar dado de baja).";
@@ -98,11 +94,9 @@ public class ProductoService(AppDbContext contexto) : IProductoService
         return await GuardarAsync($"Se dio de baja el producto \"{producto.Nombre}\".", cancelacion);
     }
 
-    /// <summary>Producto que todavía se puede modificar, o null si no existe o está dado de baja.</summary>
     private Task<Producto?> BuscarActivoAsync(int id, CancellationToken cancelacion) =>
         contexto.Productos.FirstOrDefaultAsync(producto => producto.Id == id && producto.Activo, cancelacion);
 
-    /// <summary>Devuelve el mensaje de la primera regla de negocio que no se cumple, o null si se cumplen todas.</summary>
     private async Task<string?> BuscarErrorDeReglaAsync(
         ProductoFormularioViewModel modelo,
         int? idProductoEditado,
@@ -110,7 +104,6 @@ public class ProductoService(AppDbContext contexto) : IProductoService
     {
         var nombre = modelo.Nombre.Trim();
 
-        // La columna Nombre usa la colación NOCASE, así que en SQL esta comparación ignora mayúsculas.
         var nombreRepetido = await contexto.Productos.AnyAsync(
             producto => producto.Nombre == nombre && producto.Id != idProductoEditado,
             cancelacion);
@@ -147,8 +140,6 @@ public class ProductoService(AppDbContext contexto) : IProductoService
         }
         catch (DbUpdateException error) when (EsNombreRepetido(error))
         {
-            // Otra petición guardó el mismo nombre entre la comprobación y este guardado;
-            // el índice único de la base de datos lo detuvo.
             return ResultadoOperacion.Fallido(MensajeNombreRepetido);
         }
     }
