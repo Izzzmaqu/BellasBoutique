@@ -1,0 +1,51 @@
+@model CatalogoViewModel
+@{
+    ViewData["Title"] = "Catálogo";
+    var todasActivas = Model.CategoriaSeleccionadaId is null;
+}
+
+@section Estilos {
+    <link rel="stylesheet" href="~/css/catalogo.css" asp-append-version="true" />
+}
+
+<div class="catalogo">
+    <h1 class="catalogo__titulo">Catálogo</h1>
+
+    <nav class="filtros" aria-label="Categorías">
+        <a class="filtro @(todasActivas ? "filtro--activo" : null)"
+           aria-current="@(todasActivas ? "page" : null)"
+           asp-action="Index">Todos</a>
+        @foreach (var categoria in Model.Categorias)
+        {
+            var activa = categoria.Id == Model.CategoriaSeleccionadaId;
+            <a class="filtro @(activa ? "filtro--activo" : null)"
+               aria-current="@(activa ? "page" : null)"
+               asp-action="Index" asp-route-categoriaId="@categoria.Id">@categoria.Nombre</a>
+        }
+    </nav>
+
+    @if (Model.Productos.Count == 0)
+    {
+        <p class="catalogo__vacio">@(todasActivas ? "No hay productos disponibles." : "No hay productos disponibles en esta categoría.")</p>
+    }
+    else
+    {
+        <div class="catalogo__grilla">
+            @foreach (var producto in Model.Productos)
+            {
+                <article class="tarjeta-producto">
+                    <div class="tarjeta-producto__imagen">Imagen del producto</div>
+                    <h2 class="tarjeta-producto__nombre">@producto.Nombre</h2>
+                    <p class="tarjeta-producto__dato">@producto.Categoria</p>
+                    @if (producto.Descripcion is not null)
+                    {
+                        <p class="tarjeta-producto__dato">@producto.Descripcion</p>
+                    }
+                    <p class="tarjeta-producto__precio">@producto.Precio.ToString("C0")</p>
+                    <p class="tarjeta-producto__dato">Stock: @producto.Stock</p>
+                    <a class="btn-secondary tarjeta-producto__agregar" href="#">Añadir al carrito</a>
+                </article>
+            }
+        </div>
+    }
+</div>
