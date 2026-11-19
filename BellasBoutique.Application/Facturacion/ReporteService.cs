@@ -17,29 +17,27 @@ public class ReporteService(AppDbContext contexto) : IReporteService
     {
         var (inicio, finExclusivo) = CalcularRango(periodo, fecha);
 
-        var ventasExitosas = contexto.Ventas
+        // Una sola consulta (ventas con sus líneas) para que la tarjeta de ingresos y la tabla salgan de la misma lectura.
+        var ventasExitosas = await contexto.Ventas
             .AsNoTracking()
             .Where(venta => venta.EstadoPago == EstadoPago.Exitoso
                 && venta.Fecha >= inicio
-                && venta.Fecha < finExclusivo);
-
-        var subtotales = await ventasExitosas
-            .Select(venta => venta.Subtotal)
+                && venta.Fecha < finExclusivo)
+            .Select(venta => new VentaDelPeriodo(
+                venta.Subtotal,
+                venta.Detalles
+                    .Select(detalle => new LineaVendida(detalle.Producto.Nombre, detalle.Cantidad, detalle.PrecioUnitario))
+                    .ToList()))
             .ToListAsync(cancelacion);
 
-        var lineasVendidas = await ventasExitosas
-            .SelectMany(venta => venta.Detalles)
-            .Select(detalle => new LineaVendida(detalle.Producto.Nombre, detalle.Cantidad, detalle.PrecioUnitario))
-            .ToListAsync(cancelacion);
-
-        var productosVendidos = AgruparPorProducto(lineasVendidas);
+        var productosVendidos = AgruparPorProducto(ventasExitosas.SelectMany(venta => venta.Lineas));
         var productosConStockBajo = await ListarProductosConStockBajoAsync(cancelacion);
 
         return new ReporteViewModel(
             periodo,
             fecha,
             productosVendidos.Sum(producto => producto.Cantidad),
-            subtotales.Sum(),
+            ventasExitosas.Sum(venta => venta.Subtotal),
             productosVendidos,
             productosConStockBajo);
     }
@@ -50,11 +48,11 @@ public class ReporteService(AppDbContext contexto) : IReporteService
             ? new DateOnly(fecha.Year, fecha.Month, 1)
             : fecha;
 
-        var diaSiguienteAlPeriodo = periodo == PeriodoReporte.Mensual
-            ? primerDia.AddMonths(1)
-            : primerDia.AddDays(1);
+        var ultimoDia = periodo == PeriodoReporte.Mensual
+            ? new DateOnly(fecha.Year, fecha.Month, DateTime.DaysInMonth(fecha.Year, fecha.Month))
+            : fecha;
 
-        return (primerDia.ToDateTime(TimeOnly.MinValue), diaSiguienteAlPeriodo.ToDateTime(TimeOnly.MinValue));
+        return (primerDia.ToDateTime(TimeOnly.MinValue), RangoDeFechas.InicioDelDiaSiguiente(ultimoDia));
     }
 
     private static List<ProductoVendidoViewModel> AgruparPorProducto(IEnumerable<LineaVendida> lineas) =>
@@ -79,6 +77,8 @@ public class ReporteService(AppDbContext contexto) : IReporteService
             .Select(producto => new ProductoStockBajoViewModel(producto.Nombre, producto.Stock))
             .ToListAsync(cancelacion);
     }
+
+    private record VentaDelPeriodo(decimal Subtotal, List<LineaVendida> Lineas);
 
     private record LineaVendida(string Producto, int Cantidad, decimal PrecioUnitario);
 }

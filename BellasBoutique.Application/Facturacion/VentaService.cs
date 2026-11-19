@@ -49,7 +49,7 @@ public class VentaService(AppDbContext contexto) : IVentaService
         if (filtro.Hasta is not null)
         {
             // "Hasta" incluye el día completo: se compara contra el inicio del día siguiente.
-            var finExclusivo = filtro.Hasta.Value.AddDays(1).ToDateTime(TimeOnly.MinValue);
+            var finExclusivo = RangoDeFechas.InicioDelDiaSiguiente(filtro.Hasta.Value);
             detalles = detalles.Where(detalle => detalle.Venta.Fecha < finExclusivo);
         }
 
