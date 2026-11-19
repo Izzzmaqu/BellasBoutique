@@ -9,6 +9,7 @@ public class ProductoConfiguracion : IEntityTypeConfiguration<Producto>
     {
         builder.ToTable("Productos", tabla =>
         {
+            // EF guarda el decimal como texto en SQLite; sin el CAST la comparación sería entre textos, no entre números.
             tabla.HasCheckConstraint("CK_Productos_Precio_NoNegativo", "CAST(\"Precio\" AS REAL) >= 0");
             tabla.HasCheckConstraint("CK_Productos_Stock_NoNegativo", "\"Stock\" >= 0");
         });

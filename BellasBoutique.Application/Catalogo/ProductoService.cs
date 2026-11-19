@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BellasBoutique.Application.Catalogo;
 
+// Cada escritura hace un único SaveChangesAsync, que EF ejecuta en una transacción implícita y por eso es atómica.
+// Facturación sí usará una transacción explícita: lee el stock y escribe Venta, DetalleVenta y stock en un solo bloque.
 public class ProductoService(AppDbContext contexto) : IProductoService
 {
     private const string MensajeNombreRepetido = "Ya existe un producto con ese nombre (puede estar dado de baja).";
