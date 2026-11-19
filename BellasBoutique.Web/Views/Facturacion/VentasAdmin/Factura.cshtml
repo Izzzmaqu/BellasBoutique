@@ -1,0 +1,20 @@
+@model FacturaViewModel
+@{
+    const string titulo = "Detalle de venta";
+    ViewData["Title"] = titulo;
+}
+
+@section Estilos {
+    <link rel="stylesheet" href="~/css/facturacion.css" asp-append-version="true" />
+}
+
+<partial name="_CabeceraPagina" model="new CabeceraPaginaModelo(titulo)" />
+
+<div class="factura-pagina">
+    <partial name="_Factura" model="Model" />
+
+    <div class="factura-pagina__acciones">
+        <a class="btn-secondary" asp-action="Index">Volver a ventas</a>
+        <button type="button" class="btn-primary" onclick="window.print()">Imprimir</button>
+    </div>
+</div>

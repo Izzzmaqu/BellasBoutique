@@ -1,0 +1,11 @@
+@using BellasBoutique.Data.Facturacion
+@model EstadoPago
+@{
+    var claseBadge = Model switch
+    {
+        EstadoPago.Exitoso => "badge-exitoso",
+        EstadoPago.Fallido => "badge-fallido",
+        _ => "badge-pendiente"
+    };
+}
+<span class="@claseBadge">@Model</span>
