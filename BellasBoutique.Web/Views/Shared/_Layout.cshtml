@@ -1,12 +1,25 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var controladorActual = ViewContext.RouteData.Values["controller"] as string;
+    var enCatalogo = controladorActual == "Catalogo";
+}
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <partial name="_HeadComun" />
+    @await RenderSectionAsync("Estilos", required: false)
 </head>
 <body>
     <header>
         <nav class="barra-nav">
             <a class="barra-nav__marca" asp-area="" asp-controller="Home" asp-action="Index">Bellas Boutique</a>
+            <div class="barra-nav__enlaces">
+                <a class="barra-nav__enlace" aria-current="@(enCatalogo ? "page" : null)"
+                   asp-area="" asp-controller="Catalogo" asp-action="Index">Catálogo</a>
+                <a class="barra-nav__enlace" href="#">Soporte</a>
+                <a class="barra-nav__enlace" href="#">Carrito</a>
+                <a class="barra-nav__enlace" href="#">Mi perfil</a>
+                <a class="barra-nav__enlace barra-nav__enlace--secundario" href="#">Cerrar sesión</a>
+            </div>
         </nav>
     </header>
     <main class="contenido">

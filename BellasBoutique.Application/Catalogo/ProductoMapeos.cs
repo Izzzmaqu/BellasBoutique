@@ -15,6 +15,15 @@ public static class ProductoMapeos
             producto.Stock,
             producto.Stock <= ReglasCatalogo.UmbralStockBajo));
 
+    public static IQueryable<ProductoCatalogoViewModel> ProyectarACatalogo(this IQueryable<Producto> productos) =>
+        productos.Select(producto => new ProductoCatalogoViewModel(
+            producto.Id,
+            producto.Nombre,
+            producto.Categoria.Nombre,
+            producto.Descripcion,
+            producto.Precio,
+            producto.Stock));
+
     public static IQueryable<ProductoFormularioViewModel> ProyectarAFormulario(this IQueryable<Producto> productos) =>
         productos.Select(producto => new ProductoFormularioViewModel
         {

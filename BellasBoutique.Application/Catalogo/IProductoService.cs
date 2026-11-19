@@ -6,6 +6,8 @@ public interface IProductoService
 {
     Task<IReadOnlyList<ProductoListadoViewModel>> ListarActivosAsync(CancellationToken cancelacion);
 
+    Task<CatalogoViewModel> ListarCatalogoAsync(int? categoriaId, CancellationToken cancelacion);
+
     Task<ProductoFormularioViewModel?> ObtenerPorIdAsync(int id, CancellationToken cancelacion);
 
     Task<ListasDesplegablesViewModel> ObtenerListasDesplegablesAsync(CancellationToken cancelacion);

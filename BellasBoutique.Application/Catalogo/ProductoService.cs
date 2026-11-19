@@ -23,6 +23,27 @@ public class ProductoService(AppDbContext contexto) : IProductoService
             .ToListAsync(cancelacion);
     }
 
+    public async Task<CatalogoViewModel> ListarCatalogoAsync(int? categoriaId, CancellationToken cancelacion)
+    {
+        var disponibles = contexto.Productos
+            .AsNoTracking()
+            .Where(producto => producto.Activo && producto.Stock > 0);
+
+        if (categoriaId is not null)
+        {
+            disponibles = disponibles.Where(producto => producto.CategoriaId == categoriaId);
+        }
+
+        var productos = await disponibles
+            .OrderBy(producto => producto.Nombre)
+            .ProyectarACatalogo()
+            .ToListAsync(cancelacion);
+
+        var categorias = await ListarCategoriasAsync(cancelacion);
+
+        return new CatalogoViewModel(productos, categorias, categoriaId);
+    }
+
     public async Task<ProductoFormularioViewModel?> ObtenerPorIdAsync(int id, CancellationToken cancelacion)
     {
         return await contexto.Productos
@@ -34,11 +55,7 @@ public class ProductoService(AppDbContext contexto) : IProductoService
 
     public async Task<ListasDesplegablesViewModel> ObtenerListasDesplegablesAsync(CancellationToken cancelacion)
     {
-        var categorias = await contexto.Categorias
-            .AsNoTracking()
-            .OrderBy(categoria => categoria.Nombre)
-            .ProyectarAOpciones()
-            .ToListAsync(cancelacion);
+        var categorias = await ListarCategoriasAsync(cancelacion);
 
         var proveedores = await contexto.Proveedores
             .AsNoTracking()
@@ -94,6 +111,15 @@ public class ProductoService(AppDbContext contexto) : IProductoService
         producto.Activo = false;
 
         return await GuardarAsync($"Se dio de baja el producto \"{producto.Nombre}\".", cancelacion);
+    }
+
+    private async Task<IReadOnlyList<OpcionViewModel>> ListarCategoriasAsync(CancellationToken cancelacion)
+    {
+        return await contexto.Categorias
+            .AsNoTracking()
+            .OrderBy(categoria => categoria.Nombre)
+            .ProyectarAOpciones()
+            .ToListAsync(cancelacion);
     }
 
     private Task<Producto?> BuscarActivoAsync(int id, CancellationToken cancelacion) =>
