@@ -13,6 +13,7 @@ namespace BellasBoutique.Application.Catalogo;
 public class ProductoService(AppDbContext contexto) : IProductoService
 {
     private const string MensajeNombreRepetido = "Ya existe un producto con ese nombre (puede estar dado de baja).";
+    private const string MensajeProductoNoDisponible = "El producto no existe o está dado de baja.";
 
     public async Task<IReadOnlyList<ProductoListadoViewModel>> ListarActivosAsync(CancellationToken cancelacion)
     {
@@ -67,15 +68,10 @@ public class ProductoService(AppDbContext contexto) : IProductoService
 
     public async Task<ResultadoOperacion> EditarAsync(int id, ProductoFormularioViewModel modelo, CancellationToken cancelacion)
     {
-        var producto = await contexto.Productos.FirstOrDefaultAsync(producto => producto.Id == id, cancelacion);
+        var producto = await BuscarActivoAsync(id, cancelacion);
         if (producto is null)
         {
-            return ResultadoOperacion.Fallido("El producto no existe.");
-        }
-
-        if (!producto.Activo)
-        {
-            return ResultadoOperacion.Fallido("No se puede editar un producto dado de baja.");
+            return ResultadoOperacion.Fallido(MensajeProductoNoDisponible);
         }
 
         var errorDeRegla = await BuscarErrorDeReglaAsync(modelo, idProductoEditado: id, cancelacion);
@@ -91,21 +87,20 @@ public class ProductoService(AppDbContext contexto) : IProductoService
 
     public async Task<ResultadoOperacion> DarDeBajaAsync(int id, CancellationToken cancelacion)
     {
-        var producto = await contexto.Productos.FirstOrDefaultAsync(producto => producto.Id == id, cancelacion);
+        var producto = await BuscarActivoAsync(id, cancelacion);
         if (producto is null)
         {
-            return ResultadoOperacion.Fallido("El producto no existe.");
-        }
-
-        if (!producto.Activo)
-        {
-            return ResultadoOperacion.Fallido("El producto ya estaba dado de baja.");
+            return ResultadoOperacion.Fallido(MensajeProductoNoDisponible);
         }
 
         producto.Activo = false;
 
         return await GuardarAsync($"Se dio de baja el producto \"{producto.Nombre}\".", cancelacion);
     }
+
+    /// <summary>Producto que todavía se puede modificar, o null si no existe o está dado de baja.</summary>
+    private Task<Producto?> BuscarActivoAsync(int id, CancellationToken cancelacion) =>
+        contexto.Productos.FirstOrDefaultAsync(producto => producto.Id == id && producto.Activo, cancelacion);
 
     /// <summary>Devuelve el mensaje de la primera regla de negocio que no se cumple, o null si se cumplen todas.</summary>
     private async Task<string?> BuscarErrorDeReglaAsync(
