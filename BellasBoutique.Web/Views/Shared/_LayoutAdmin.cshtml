@@ -2,6 +2,7 @@
     var controladorActual = ViewContext.RouteData.Values["controller"] as string;
     var enProductos = controladorActual == "ProductosAdmin";
     var enVentas = controladorActual == "VentasAdmin";
+    var enReportes = controladorActual == "Reportes";
 }
 <!DOCTYPE html>
 <html lang="es">
@@ -22,7 +23,9 @@
             <a class="barra-lateral__enlace @(enVentas ? "barra-lateral__enlace--activo" : null)"
                aria-current="@(enVentas ? "page" : null)"
                asp-controller="VentasAdmin" asp-action="Index">Ventas</a>
-            <a class="barra-lateral__enlace" href="#">Reportes</a>
+            <a class="barra-lateral__enlace @(enReportes ? "barra-lateral__enlace--activo" : null)"
+               aria-current="@(enReportes ? "page" : null)"
+               asp-controller="Reportes" asp-action="Index">Reportes</a>
         </nav>
         <a class="barra-lateral__enlace barra-lateral__cerrar-sesion" href="#">Cerrar sesión</a>
     </aside>

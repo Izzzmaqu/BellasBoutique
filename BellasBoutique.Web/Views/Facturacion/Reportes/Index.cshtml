@@ -1,0 +1,114 @@
+@model ReporteViewModel
+@{
+    ViewData["Title"] = "Reportes";
+    var esMensual = Model.Periodo == PeriodoReporte.Mensual;
+    var dia = Model.Fecha.ToString("yyyy-MM-dd");
+    var mes = Model.Fecha.ToString("yyyy-MM");
+}
+
+@section Estilos {
+    <link rel="stylesheet" href="~/css/facturacion.css" asp-append-version="true" />
+}
+
+<header class="cabecera-pagina">
+    <h1>Reportes</h1>
+    <div class="reportes__controles">
+        <form method="get" class="reportes__fecha">
+            <input type="hidden" name="periodo" value="@Model.Periodo" />
+            @if (esMensual)
+            {
+                <input type="month" name="mes" value="@mes" aria-label="Mes del reporte" />
+            }
+            else
+            {
+                <input type="date" name="fecha" value="@dia" aria-label="Día del reporte" />
+            }
+            <button type="submit" class="btn-secondary">Ver</button>
+        </form>
+        <nav class="reportes__periodos" aria-label="Período del reporte">
+            <a class="filtro @(esMensual ? null : "filtro--activo")"
+               aria-current="@(esMensual ? null : "page")"
+               asp-action="Index" asp-route-periodo="@PeriodoReporte.Diario" asp-route-fecha="@dia">Diario</a>
+            <a class="filtro @(esMensual ? "filtro--activo" : null)"
+               aria-current="@(esMensual ? "page" : null)"
+               asp-action="Index" asp-route-periodo="@PeriodoReporte.Mensual" asp-route-mes="@mes">Mensual</a>
+        </nav>
+    </div>
+</header>
+
+<div class="reportes__indicadores">
+    <div class="tarjeta indicador">
+        <p class="indicador__etiqueta">Productos vendidos</p>
+        <p class="indicador__valor">@Model.CantidadProductosVendidos</p>
+    </div>
+    <div class="tarjeta indicador">
+        <p class="indicador__etiqueta">Ingresos por ventas</p>
+        <p class="indicador__valor">@Model.Ingresos.ToString("C0")</p>
+    </div>
+    <div class="tarjeta indicador">
+        <p class="indicador__etiqueta">Productos con stock bajo</p>
+        <p class="indicador__valor">@Model.ProductosConStockBajo.Count</p>
+    </div>
+</div>
+
+<div class="reportes__tablas">
+    <section class="reportes__seccion">
+        <h2 class="reportes__subtitulo">Productos vendidos</h2>
+        <div class="tarjeta tabla-contenedor">
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th class="reportes__columna-cantidad tabla__numero">Cantidad</th>
+                        <th class="reportes__columna-ingresos tabla__numero">Ingresos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var producto in Model.ProductosVendidos)
+                    {
+                        <tr>
+                            <td>@producto.Producto</td>
+                            <td class="tabla__numero">@producto.Cantidad</td>
+                            <td class="tabla__numero">@producto.Ingresos.ToString("C0")</td>
+                        </tr>
+                    }
+                    @if (Model.ProductosVendidos.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="3" class="tabla__vacia">No hay ventas exitosas en este período.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="reportes__seccion reportes__seccion--lateral">
+        <h2 class="reportes__subtitulo">Productos con stock bajo</h2>
+        <div class="tarjeta tabla-contenedor">
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th class="reportes__columna-stock tabla__numero">Stock</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var producto in Model.ProductosConStockBajo)
+                    {
+                        <tr>
+                            <td>@producto.Producto</td>
+                            <td class="tabla__numero stock-bajo">@producto.Stock</td>
+                        </tr>
+                    }
+                    @if (Model.ProductosConStockBajo.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="2" class="tabla__vacia">No hay productos con stock bajo.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>

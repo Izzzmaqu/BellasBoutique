@@ -13,34 +13,6 @@
     gap: var(--space-3);
 }
 
-.filtro {
-    padding: var(--space-2) var(--space-4);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-pill);
-    background: var(--color-bg-surface);
-    color: var(--color-text-primary);
-    font-size: var(--font-size-small);
-    line-height: var(--line-height-small);
-    font-weight: 500;
-    text-decoration: none;
-}
-
-.filtro:hover {
-    background: var(--color-bg-muted);
-}
-
-.filtro--activo,
-.filtro--activo:hover {
-    background: var(--color-brand);
-    border-color: var(--color-brand);
-    color: var(--color-text-inverse);
-}
-
-.filtro:focus-visible {
-    outline: 2px solid var(--color-brand);
-    outline-offset: 2px;
-}
-
 .catalogo__vacio {
     margin: 0;
     color: var(--color-text-secondary);
