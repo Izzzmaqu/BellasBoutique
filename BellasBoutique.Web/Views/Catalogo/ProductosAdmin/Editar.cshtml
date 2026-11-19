@@ -1,0 +1,12 @@
+@model ProductoFormularioViewModel
+@{
+    const string titulo = "Editar producto";
+    ViewData["Title"] = titulo;
+}
+
+<partial name="_CabeceraPagina" model="new CabeceraPaginaModelo(titulo)" />
+<partial name="_FormularioProducto" model="Model" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

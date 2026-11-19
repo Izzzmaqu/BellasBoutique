@@ -14,7 +14,7 @@ Tienda en línea de ropa y accesorios.
 - `BellasBoutique.Data`: acceso a datos.
 
 Cada capa se organiza en subcarpetas por módulo: `Auth`, `Catalogo`, `Carrito`, `Facturacion`, `Soporte`.
-En `Web` las subcarpetas están dentro de `Controllers` y `Views`.
+En `Web` las subcarpetas están dentro de `Controllers` y `Views`: un controlador en `Controllers/<Modulo>/` busca sus vistas en `Views/<Modulo>/<Controlador>/` (lo resuelve `Infraestructura/ModuloViewLocationExpander.cs`). Por ejemplo, `Controllers/Catalogo/ProductosAdminController.cs` usa `Views/Catalogo/ProductosAdmin/`.
 
 Los estilos comparten los tokens de `wwwroot/css/tokens.css`; `wwwroot/css/base.css` los usa y no define valores propios.
 

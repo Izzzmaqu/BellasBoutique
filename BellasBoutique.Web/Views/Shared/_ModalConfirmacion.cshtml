@@ -1,0 +1,14 @@
+@model ModalConfirmacionModelo
+
+@* Cualquier formulario con data-confirmar="mensaje" pide confirmación con este modal antes de enviarse. *@
+<dialog id="modal-confirmacion" class="modal" aria-labelledby="modal-confirmacion-titulo">
+    <form method="dialog">
+        <h2 id="modal-confirmacion-titulo" class="modal__titulo">@Model.Titulo</h2>
+        <p data-modal-mensaje></p>
+        <div class="modal__acciones">
+            <button type="submit" class="btn-secondary" value="cancelar">Cancelar</button>
+            <button type="submit" class="btn-primary" value="confirmar">@Model.TextoConfirmar</button>
+        </div>
+    </form>
+</dialog>
+<script src="~/js/modal-confirmacion.js" asp-append-version="true"></script>

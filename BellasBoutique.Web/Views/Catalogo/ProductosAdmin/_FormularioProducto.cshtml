@@ -1,0 +1,43 @@
+@model ProductoFormularioViewModel
+
+@* Sin asp-action: el formulario se envía a la misma URL, así sirve para Crear y para Editar/{id}. *@
+<form method="post" class="tarjeta formulario">
+    <div asp-validation-summary="ModelOnly" class="aviso aviso--error"></div>
+
+    <campo-formulario asp-for="Nombre">
+        <input asp-for="Nombre" placeholder="Nombre del producto" />
+    </campo-formulario>
+
+    <campo-formulario asp-for="Descripcion">
+        <textarea asp-for="Descripcion" rows="4" placeholder="Descripción del producto"></textarea>
+    </campo-formulario>
+
+    <div class="formulario__fila">
+        <campo-formulario asp-for="Precio">
+            <input asp-for="Precio" type="number" step="1" placeholder="₡0" />
+        </campo-formulario>
+        <campo-formulario asp-for="Stock">
+            <input asp-for="Stock" type="number" step="1" placeholder="0" />
+        </campo-formulario>
+    </div>
+
+    <div class="formulario__fila">
+        <campo-formulario asp-for="CategoriaId">
+            <select asp-for="CategoriaId" asp-items="@(new SelectList(Model.Listas.Categorias, nameof(OpcionViewModel.Id), nameof(OpcionViewModel.Nombre)))">
+                <option value="">Seleccione una categoría</option>
+            </select>
+        </campo-formulario>
+        <campo-formulario asp-for="ProveedorId">
+            <select asp-for="ProveedorId" asp-items="@(new SelectList(Model.Listas.Proveedores, nameof(OpcionViewModel.Id), nameof(OpcionViewModel.Nombre)))">
+                <option value="">Seleccione un proveedor</option>
+            </select>
+        </campo-formulario>
+    </div>
+
+    <div class="placeholder-imagen placeholder-imagen--grande">Imagen del producto</div>
+
+    <div class="formulario__acciones">
+        <button type="submit" class="btn-primary">Guardar producto</button>
+        <a class="btn-secondary" asp-action="Index">Cancelar</a>
+    </div>
+</form>

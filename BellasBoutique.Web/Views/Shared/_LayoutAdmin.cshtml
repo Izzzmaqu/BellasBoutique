@@ -1,0 +1,32 @@
+@{
+    var controladorActual = ViewContext.RouteData.Values["controller"] as string;
+    var enProductos = controladorActual == "ProductosAdmin";
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <partial name="_HeadComun" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+</head>
+<body class="admin">
+    <aside class="barra-lateral">
+        <p class="barra-lateral__marca">Bellas Boutique</p>
+        <p class="barra-lateral__subtitulo">Administración</p>
+        <nav class="barra-lateral__menu" aria-label="Administración">
+            <a class="barra-lateral__enlace" href="#">Usuarios</a>
+            <a class="barra-lateral__enlace @(enProductos ? "barra-lateral__enlace--activo" : null)"
+               aria-current="@(enProductos ? "page" : null)"
+               asp-controller="ProductosAdmin" asp-action="Index">Productos</a>
+            <a class="barra-lateral__enlace" href="#">Ventas</a>
+            <a class="barra-lateral__enlace" href="#">Reportes</a>
+        </nav>
+        <a class="barra-lateral__enlace barra-lateral__cerrar-sesion" href="#">Cerrar sesión</a>
+    </aside>
+    <main class="admin__contenido">
+        <partial name="_MensajesTempData" />
+        @RenderBody()
+    </main>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
