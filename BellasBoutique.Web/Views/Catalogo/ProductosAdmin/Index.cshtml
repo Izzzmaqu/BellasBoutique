@@ -1,0 +1,53 @@
+@model IReadOnlyList<ProductoListadoViewModel>
+@{
+    const string titulo = "Productos";
+    ViewData["Title"] = titulo;
+}
+
+<partial name="_CabeceraPagina" model='new CabeceraPaginaModelo(titulo, "Nuevo producto", Url.Action("Crear"))' />
+
+<div class="tarjeta tabla-contenedor">
+    <table class="tabla">
+        <thead>
+            <tr>
+                <th class="tabla__columna-imagen">Imagen</th>
+                <th>Nombre</th>
+                <th class="tabla__columna-categoria">Categoría</th>
+                <th class="tabla__columna-proveedor">Proveedor</th>
+                <th class="tabla__columna-precio tabla__numero">Precio</th>
+                <th class="tabla__columna-stock tabla__numero">Stock</th>
+                <th class="tabla__columna-acciones">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var producto in Model)
+            {
+                <tr>
+                    <td><span class="placeholder-imagen" aria-hidden="true"></span></td>
+                    <td>@producto.Nombre</td>
+                    <td>@producto.Categoria</td>
+                    <td>@producto.Proveedor</td>
+                    <td class="tabla__numero">@producto.Precio.ToString("C0")</td>
+                    <td class="tabla__numero @(producto.StockBajo ? "stock-bajo" : null)">@producto.Stock</td>
+                    <td>
+                        <div class="tabla__acciones">
+                            <a class="enlace-accion" asp-action="Editar" asp-route-id="@producto.Id">Editar</a>
+                            <form method="post" asp-action="DarDeBaja" asp-route-id="@producto.Id"
+                                  data-confirmar="¿Dar de baja &quot;@producto.Nombre&quot;? Dejará de aparecer en el listado, pero se conserva para el historial de ventas.">
+                                <button type="submit" class="enlace-accion">Dar de baja</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+            @if (Model.Count == 0)
+            {
+                <tr>
+                    <td colspan="7" class="tabla__vacia">No hay productos activos.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<partial name="_ModalConfirmacion" model='new ModalConfirmacionModelo("Dar de baja producto", "Dar de baja")' />

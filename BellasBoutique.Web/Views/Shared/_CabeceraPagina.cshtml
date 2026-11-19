@@ -1,0 +1,9 @@
+@model CabeceraPaginaModelo
+
+<header class="cabecera-pagina">
+    <h1>@Model.Titulo</h1>
+    @if (Model.UrlBoton is not null)
+    {
+        <a class="btn-primary" href="@Model.UrlBoton">@Model.TextoBoton</a>
+    }
+</header>

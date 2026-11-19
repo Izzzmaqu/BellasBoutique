@@ -1,0 +1,8 @@
+@if (TempData[ClavesTempData.Exito] is string mensajeDeExito)
+{
+    <p class="aviso aviso--exito" role="status">@mensajeDeExito</p>
+}
+@if (TempData[ClavesTempData.Error] is string mensajeDeError)
+{
+    <p class="aviso aviso--error" role="alert">@mensajeDeError</p>
+}
