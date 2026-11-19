@@ -1,5 +1,6 @@
 using System.Globalization;
 using BellasBoutique.Application.Catalogo;
+using BellasBoutique.Application.Facturacion;
 using BellasBoutique.Data;
 using BellasBoutique.Web.Infraestructura;
 using Microsoft.AspNetCore.Localization;
@@ -11,6 +12,7 @@ var cadenaConexion = builder.Configuration.GetConnectionString("BellasBoutique")
 
 builder.Services.AddDatos(cadenaConexion);
 builder.Services.AddCatalogo();
+builder.Services.AddFacturacion();
 builder.Services
     .AddControllersWithViews(opciones => opciones.UsarMensajesDeEnlaceEnEspanol())
     .AddRazorOptions(opciones => opciones.ViewLocationExpanders.Add(new ModuloViewLocationExpander()));

@@ -1,0 +1,61 @@
+@* En Shared para que el carrito la reutilice en su pantalla de compra confirmada. *@
+@using BellasBoutique.Application.Facturacion
+@model BellasBoutique.Application.Facturacion.ViewModels.FacturaViewModel
+@{
+    var porcentajeIva = (ReglasFacturacion.TasaIva * 100).ToString("0");
+}
+
+<article class="tarjeta factura">
+    <header class="factura__encabezado">
+        <h2 class="factura__titulo">Factura N.º @Model.NumeroFactura</h2>
+        <partial name="_BadgeEstadoPago" model="Model.EstadoPago" />
+    </header>
+
+    <dl class="factura__datos">
+        <div>
+            <dt>Fecha</dt>
+            <dd>@Model.Fecha.ToString("dd/MM/yyyy")</dd>
+        </div>
+        <div>
+            <dt>Cliente</dt>
+            <dd>Cliente @Model.ClienteId</dd>
+        </div>
+    </dl>
+
+    <table class="factura__detalle">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th class="factura__columna-cantidad">Cant.</th>
+                <th class="factura__columna-monto">Precio unitario</th>
+                <th class="factura__columna-monto">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var linea in Model.Lineas)
+            {
+                <tr>
+                    <td>@linea.Producto</td>
+                    <td class="factura__columna-cantidad">@linea.Cantidad</td>
+                    <td class="factura__columna-monto">@linea.PrecioUnitario.ToString("C0")</td>
+                    <td class="factura__columna-monto">@linea.Importe.ToString("C0")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <dl class="factura__totales">
+        <div>
+            <dt>Subtotal</dt>
+            <dd>@Model.Subtotal.ToString("C0")</dd>
+        </div>
+        <div>
+            <dt>Impuesto (@porcentajeIva%)</dt>
+            <dd>@Model.Iva.ToString("C0")</dd>
+        </div>
+        <div class="factura__total">
+            <dt>Total</dt>
+            <dd>@Model.Total.ToString("C0")</dd>
+        </div>
+    </dl>
+</article>

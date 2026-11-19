@@ -1,12 +1,15 @@
 @{
     var controladorActual = ViewContext.RouteData.Values["controller"] as string;
     var enProductos = controladorActual == "ProductosAdmin";
+    var enVentas = controladorActual == "VentasAdmin";
+    var enReportes = controladorActual == "Reportes";
 }
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <partial name="_HeadComun" />
     <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+    @await RenderSectionAsync("Estilos", required: false)
 </head>
 <body class="admin">
     <aside class="barra-lateral">
@@ -17,8 +20,12 @@
             <a class="barra-lateral__enlace @(enProductos ? "barra-lateral__enlace--activo" : null)"
                aria-current="@(enProductos ? "page" : null)"
                asp-controller="ProductosAdmin" asp-action="Index">Productos</a>
-            <a class="barra-lateral__enlace" href="#">Ventas</a>
-            <a class="barra-lateral__enlace" href="#">Reportes</a>
+            <a class="barra-lateral__enlace @(enVentas ? "barra-lateral__enlace--activo" : null)"
+               aria-current="@(enVentas ? "page" : null)"
+               asp-controller="VentasAdmin" asp-action="Index">Ventas</a>
+            <a class="barra-lateral__enlace @(enReportes ? "barra-lateral__enlace--activo" : null)"
+               aria-current="@(enReportes ? "page" : null)"
+               asp-controller="Reportes" asp-action="Index">Reportes</a>
         </nav>
         <a class="barra-lateral__enlace barra-lateral__cerrar-sesion" href="#">Cerrar sesión</a>
     </aside>
